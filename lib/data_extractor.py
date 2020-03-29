@@ -21,6 +21,9 @@ class DataExtractor:
         self.__raw_fighter_details_df = pd.read_csv(LIB_DIR + "raw_fighter_details.csv")
         self.__raw_total_fight_df = pd.read_csv(LIB_DIR + "raw_total_fight_data.csv")
 
+    def get_raw_data(self):
+        return self.__data_df
+
     def __analyze_all_data(self):
         self.__analyze_statistics(self.__preprocessed_df)
 
