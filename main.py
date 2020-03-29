@@ -11,12 +11,15 @@ if __name__ == '__main__':
     raw_data = de.get_raw_data()
 
     DataAnalyzer(raw_data, 'raw_data')
+    print(raw_data)
+    print(raw_data.isnull().sum())
 
     fm = FillMissing(raw_data)
     fm.fill_missing_values()
     filled_data = fm.get_values()
 
     filled_data.to_csv(LIB_DIR + 'data_after_filling.csv', index=False)
+    print(raw_data.isnull().sum())
 
     DataAnalyzer(filled_data, 'filled_data')
 
@@ -30,8 +33,8 @@ if __name__ == '__main__':
     enc = DataEncoder(normalized_data)
     enc.encode_data()
     enc_data = enc.get_encoded_data()
-    print(enc_data)
 
-    enc_data.drop(columns=['R_fighter', 'B_fighter', 'Referee', 'date', 'location'])
+    enc_data = enc_data.drop(columns=['R_fighter', 'B_fighter', 'Referee', 'date', 'location'])
 
     enc_data.to_csv(LIB_DIR + 'data_after_encoding.csv', index=False)
+    print(enc_data)
