@@ -58,7 +58,7 @@ class DataEncoder:
     #
 
     def __encode_categorical_strings(self):
-        categorical_string_columns = ['Winner', 'location', 'weight_class']
+        categorical_string_columns = ['Referee', 'Winner', 'location', 'weight_class']
         for col in categorical_string_columns:
             self.__data[col] = self.__data[col].astype('category').cat.codes.apply(lambda x: self.decimal_to_binary(x))
         for fighter in FIGHTERS:
@@ -72,7 +72,8 @@ class DataEncoder:
         self.__data['B_fighter'] = self.__data['B_fighter'].apply(lambda x: self.decimal_to_binary(x))
 
     def __encode_categorical_ints(self):
-        self.__data['no_of_rounds'] = self.__data['no_of_rounds'].astype('category').cat.codes.apply(lambda x: self.decimal_to_binary(x))
+        self.__data['no_of_rounds'] = self.__data['no_of_rounds'].astype('category').cat.codes.apply(
+            lambda x: self.decimal_to_binary(x))
         columns = []
         columns = columns + (['_current_lose_streak', '_current_win_streak',
                               '_draw', '_longest_win_streak', '_losses',
@@ -87,7 +88,6 @@ class DataEncoder:
 
             self.__data[f'R{col_name}'] = self.__data[f'R{col_name}'].apply(lambda x: self.decimal_to_binary(x))
             self.__data[f'B{col_name}'] = self.__data[f'B{col_name}'].apply(lambda x: self.decimal_to_binary(x))
-
 
     @staticmethod
     def decimal_to_binary(decimal_number):
