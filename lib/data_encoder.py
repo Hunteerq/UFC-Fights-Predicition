@@ -1,5 +1,3 @@
-import pandas as pd
-
 FIGHTERS = ['B', 'R']
 
 
@@ -20,6 +18,7 @@ class DataEncoder:
         columns_array = self.__data.select_dtypes(include=['boolean']).columns
         self.__data[columns_array] = self.__data[columns_array].astype(int)
 
+    # TODO Here values that needs to be normalized
     # def __encode_numerical(self):
     #     numerical_columns = []
     #     for fighter in FIGHTERS:
@@ -74,14 +73,13 @@ class DataEncoder:
     def __encode_categorical_ints(self):
         self.__data['no_of_rounds'] = self.__data['no_of_rounds'].astype('category').cat.codes.apply(
             lambda x: self.decimal_to_binary(x))
-        columns = []
-        columns = columns + (['_current_lose_streak', '_current_win_streak',
-                              '_draw', '_longest_win_streak', '_losses',
-                              '_total_rounds_fought', '_total_title_bouts',
-                              '_win_by_Decision_Majority', '_win_by_Decision_Split',
-                              '_win_by_Decision_Unanimous', '_win_by_KO/TKO',
-                              '_win_by_Submission', '_win_by_TKO_Doctor_Stoppage',
-                              '_wins', '_age'])
+        columns = ['_current_lose_streak', '_current_win_streak',
+                   '_draw', '_longest_win_streak', '_losses',
+                   '_total_rounds_fought', '_total_title_bouts',
+                   '_win_by_Decision_Majority', '_win_by_Decision_Split',
+                   '_win_by_Decision_Unanimous', '_win_by_KO/TKO',
+                   '_win_by_Submission', '_win_by_TKO_Doctor_Stoppage',
+                   '_wins', '_age']
         for col_name in columns:
             self.__data[[f'R{col_name}', f'B{col_name}']] = self.__data[[f'R{col_name}', f'B{col_name}']].stack().rank(
                 method='dense').unstack().astype(int)
