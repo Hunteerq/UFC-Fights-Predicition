@@ -13,7 +13,6 @@ class DataNormalizer:
 
     def __normalize_data(self):
         cols_to_normalize = []
-        print("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
         for fighter in FIGHTERS:
             cols_to_normalize = cols_to_normalize + [f'{fighter}_avg_BODY_att', f'{fighter}_avg_BODY_landed',
                                                      f'{fighter}_avg_CLINCH_att', f'{fighter}_avg_CLINCH_landed',

@@ -3,6 +3,8 @@ from lib.fill_missing_data import FillMissing
 from lib.data_encoder import DataEncoder
 from lib.data_normalizer import DataNormalizer
 
+LIB_DIR = "./data/ufcdata/"
+
 if __name__ == '__main__':
     de = DataExtractor()
     raw_data = de.get_raw_data()
@@ -11,10 +13,12 @@ if __name__ == '__main__':
     fm.fill_missing_values()
     filled_data = fm.get_values()
 
-    print(raw_data)
+    filled_data.to_csv(LIB_DIR + 'data_after_filling.csv', index=False)
 
     dn = DataNormalizer(filled_data)
     normalized_data = dn.get_normalized_data()
+
+    normalized_data.to_csv(LIB_DIR + 'data_after_normalisation.csv', index=False)
 
     print(normalized_data)
 
@@ -24,3 +28,5 @@ if __name__ == '__main__':
     print(enc_data)
 
     enc_data.drop(columns=['Referee', 'date', 'location'])
+
+    enc_data.to_csv(LIB_DIR + 'data_after_encoding.csv', index=False)
