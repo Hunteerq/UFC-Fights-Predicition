@@ -11,9 +11,9 @@ class DataExtractor:
     def __init__(self):
         self.__NUMERIC_TYPES = (int, float)
         self.__read_all_data()
-        self.__create_boxplots()
-        self.__analyze_all_data()
-        self.__normalize_all_data()
+        # self.__create_boxplots()
+        # self.__analyze_all_data()
+        # self.__normalize_all_data()
 
     def __read_all_data(self):
         self.__data_df = pd.read_csv(LIB_DIR + "data.csv")
@@ -25,10 +25,12 @@ class DataExtractor:
         return self.__data_df
 
     def __analyze_all_data(self):
-        self.__analyze_statistics(self.__preprocessed_df)
+        # self.__analyze_statistics(self.__preprocessed_df)
+        self.__analyze_statistics(self.__data_df)
 
     def __create_boxplots(self):
-        self.__analyze_boxplot_data(self.__preprocessed_df, 'preprocessed_data/')
+        # self.__analyze_boxplot_data(self.__preprocessed_df, 'preprocessed_data/')
+        self.__analyze_boxplot_data(self.__data_df, 'raw_data/')
 
     @staticmethod
     def __analyze_boxplot_data(df, folder):
@@ -62,20 +64,7 @@ class DataExtractor:
     def __get_classes_amount(df):
         return df.nunique()
 
-    def __normalize_all_data(self):
-        self.__normalize_data(self.__preprocessed_df)
 
-    def __normalize_data(self, df):
-        for column in df.select_dtypes(include=self.__NUMERIC_TYPES):
-            df[column] = self.__normalize_column(df[column])
-
-    @staticmethod
-    def __normalize_column(df):
-        max_el = df.max()
-        if max_el != 0:
-            return df.map(lambda x: x/max_el)
-        else:
-            return df
 
 
 

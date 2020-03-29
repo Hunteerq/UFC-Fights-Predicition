@@ -18,44 +18,6 @@ class DataEncoder:
         columns_array = self.__data.select_dtypes(include=['boolean']).columns
         self.__data[columns_array] = self.__data[columns_array].astype(int)
 
-    # TODO Here values that needs to be normalized
-    # def __encode_numerical(self):
-    #     numerical_columns = []
-    #     for fighter in FIGHTERS:
-    #         numerical_columns = numerical_columns + [f'{fighter}_avg_BODY_att', f'{fighter}_avg_BODY_landed',
-    #                                                  f'{fighter}_avg_CLINCH_att', f'{fighter}_avg_CLINCH_landed',
-    #                                                  f'{fighter}_avg_DISTANCE_att', f'{fighter}_avg_DISTANCE_landed',
-    #                                                  f'{fighter}_avg_GROUND_att', f'{fighter}_avg_GROUND_landed',
-    #                                                  f'{fighter}_avg_HEAD_att', f'{fighter}_avg_HEAD_landed',
-    #                                                  f'{fighter}_avg_KD', f'{fighter}_avg_LEG_att',
-    #                                                  f'{fighter}_avg_LEG_landed',
-    #                                                  f'{fighter}_avg_PASS', f'{fighter}_avg_REV',
-    #                                                  f'{fighter}_avg_SIG_STR_att', f'{fighter}_avg_SIG_STR_landed',
-    #                                                  f'{fighter}_avg_SIG_STR_pct', f'{fighter}_avg_SUB_ATT',
-    #                                                  f'{fighter}_avg_TD_att',
-    #                                                  f'{fighter}_avg_TD_landed', f'{fighter}_avg_TD_pct',
-    #                                                  f'{fighter}_avg_TOTAL_STR_att', f'{fighter}_avg_TOTAL_STR_landed',
-    #                                                  f'{fighter}_avg_opp_BODY_att', f'{fighter}_avg_opp_BODY_landed',
-    #                                                  f'{fighter}_avg_opp_CLINCH_att',
-    #                                                  f'{fighter}_avg_opp_CLINCH_landed',
-    #                                                  f'{fighter}_avg_opp_DISTANCE_att',
-    #                                                  f'{fighter}_avg_opp_DISTANCE_landed',
-    #                                                  f'{fighter}_avg_opp_GROUND_att',
-    #                                                  f'{fighter}_avg_opp_GROUND_landed', f'{fighter}_avg_opp_HEAD_att',
-    #                                                  f'{fighter}_avg_opp_HEAD_landed', f'{fighter}_avg_opp_KD',
-    #                                                  f'{fighter}_avg_opp_LEG_att', f'{fighter}_avg_opp_LEG_landed',
-    #                                                  f'{fighter}_avg_opp_PASS', f'{fighter}_avg_opp_REV',
-    #                                                  f'{fighter}_avg_opp_SIG_STR_att',
-    #                                                  f'{fighter}_avg_opp_SIG_STR_landed',
-    #                                                  f'{fighter}_avg_opp_SIG_STR_pct', f'{fighter}_avg_opp_SUB_ATT',
-    #                                                  f'{fighter}_avg_opp_TD_att', f'{fighter}_avg_opp_TD_landed',
-    #                                                  f'{fighter}_avg_opp_TD_pct', f'{fighter}_avg_opp_TOTAL_STR_att',
-    #                                                  f'{fighter}_avg_opp_TOTAL_STR_landed',
-    #                                                  f'{fighter}_total_time_fought(seconds)', f'{fighter}_Height_cms',
-    #                                                  f'{fighter}_Reach_cms', f'{fighter}_Weight_lbs'
-    #                                                  ]
-    #
-
     def __encode_categorical_strings(self):
         categorical_string_columns = ['Referee', 'Winner', 'location', 'weight_class']
         for col in categorical_string_columns:
