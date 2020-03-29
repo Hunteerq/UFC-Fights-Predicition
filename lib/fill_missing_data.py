@@ -29,3 +29,5 @@ class FillMissing:
     @staticmethod
     def check_for_missing_values(data):
         data.isnull().any()
+
+

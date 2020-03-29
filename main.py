@@ -32,6 +32,6 @@ if __name__ == '__main__':
     enc_data = enc.get_encoded_data()
     print(enc_data)
 
-    enc_data.drop(columns=['Referee', 'date', 'location'])
+    enc_data.drop(columns=['R_fighter', 'B_fighter', 'Referee', 'date', 'location'])
 
     enc_data.to_csv(LIB_DIR + 'data_after_encoding.csv', index=False)

@@ -1,7 +1,6 @@
 import pandas as pd
 
 LIB_DIR = "./data/ufcdata/"
-BOXPLOT_DIR = "./analysis/boxplot/"
 
 
 class DataExtractor:
@@ -17,8 +16,5 @@ class DataExtractor:
 
     def get_raw_data(self):
         return self.__data_df
-
-
-
 
 
