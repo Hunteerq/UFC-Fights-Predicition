@@ -3,13 +3,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 LIB_DIR = "./data/ufcdata/"
+BOXPLOT_DIR = "./analysis/boxplot/"
 
 
 class DataExtractor:
 
     def __init__(self):
+        self.__NUMERIC_TYPES = (int, float)
         self.__read_all_data()
+        self.__create_boxplots()
         self.__analyze_all_data()
+        self.__normalize_all_data()
 
     def __read_all_data(self):
         self.__data_df = pd.read_csv(LIB_DIR + "data.csv")
@@ -18,19 +22,21 @@ class DataExtractor:
         self.__raw_total_fight_df = pd.read_csv(LIB_DIR + "raw_total_fight_data.csv")
 
     def __analyze_all_data(self):
-        self.__analyze_boxplot_data(self.__preprocessed_df, 'preprocessed_data/')
         self.__analyze_statistics(self.__preprocessed_df)
+
+    def __create_boxplots(self):
+        self.__analyze_boxplot_data(self.__preprocessed_df, 'preprocessed_data/')
 
     @staticmethod
     def __analyze_boxplot_data(df, folder):
         for column in df.select_dtypes(include=('int', 'float')):
             plt.figure()
             df.boxplot([column])
-            plt.savefig('./analysis/boxplot/' + folder + column.replace('/', '_') + '.png')
+            plt.savefig(BOXPLOT_DIR + folder + column.replace('/', '_') + '.png')
             plt.close()
 
     def __analyze_statistics(self, df):
-        for column in df.select_dtypes(include=('int', 'float')):
+        for column in df.select_dtypes(include=self.__NUMERIC_TYPES):
             self.__analyze_single_row(df[column], column)
 
     def __analyze_single_row(self, df, column):
@@ -52,5 +58,21 @@ class DataExtractor:
     @staticmethod
     def __get_classes_amount(df):
         return df.nunique()
+
+    def __normalize_all_data(self):
+        self.__normalize_data(self.__preprocessed_df)
+
+    def __normalize_data(self, df):
+        for column in df.select_dtypes(include=self.__NUMERIC_TYPES):
+            df[column] = self.__normalize_column(df[column])
+
+    @staticmethod
+    def __normalize_column(df):
+        max_el = df.max()
+        if max_el != 0:
+            return df.map(lambda x: x/max_el)
+        else:
+            return df
+
 
 
