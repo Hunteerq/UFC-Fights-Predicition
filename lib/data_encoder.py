@@ -15,10 +15,6 @@ class DataEncoder:
         self.__encode_names()
         self.__encode_categorical_strings()
         self.__encode_categorical_ints()
-        print(self.__data)
-
-    def __encode_numeric(self):
-        return 0
 
     def __encode_boolean(self):
         columns_array = self.__data.select_dtypes(include=['boolean']).columns
@@ -64,25 +60,35 @@ class DataEncoder:
     def __encode_categorical_strings(self):
         categorical_string_columns = ['Winner', 'location', 'weight_class']
         for col in categorical_string_columns:
-            self.__data[col] = self.__data[col].astype('category').cat.codes.apply(lambda x: str(bin(x))[2:])
+            self.__data[col] = self.__data[col].astype('category').cat.codes.apply(lambda x: self.decimal_to_binary(x))
         for fighter in FIGHTERS:
-            self.__data[f'{fighter}_Stance'] = self.__data[f'{fighter}_Stance'].astype('category').cat.codes.apply(lambda x: str(bin(x))[2:])
+            self.__data[f'{fighter}_Stance'] = self.__data[f'{fighter}_Stance'].astype('category').cat.codes.apply(
+                lambda x: self.decimal_to_binary(x))
 
     def __encode_names(self):
         self.__data[['R_fighter', 'B_fighter']] = self.__data[['R_fighter', 'B_fighter']].stack().rank(
             method='dense').unstack().astype(int)
-        self.__data['R_fighter'] = self.__data['R_fighter'].apply(lambda x: str(bin(x))[2:])
-        self.__data['B_fighter'] = self.__data['B_fighter'].apply(lambda x: str(bin(x))[2:])
+        self.__data['R_fighter'] = self.__data['R_fighter'].apply(lambda x: self.decimal_to_binary(x))
+        self.__data['B_fighter'] = self.__data['B_fighter'].apply(lambda x: self.decimal_to_binary(x))
 
     def __encode_categorical_ints(self):
-        columns = ['no_of_rounds']
-        for fighter in FIGHTERS:
-            columns = columns + ([f'{fighter}_current_lose_streak', f'{fighter}_current_win_streak',
-                                  f'{fighter}_draw', f'{fighter}_longest_win_streak', f'{fighter}_losses',
-                                  f'{fighter}_total_rounds_fought', f'{fighter}_total_title_bouts',
-                                  f'{fighter}_win_by_Decision_Majority', f'{fighter}_win_by_Decision_Split',
-                                  f'{fighter}_win_by_Decision_Unanimous', f'{fighter}_win_by_KO/TKO',
-                                  f'{fighter}_win_by_Submission', f'{fighter}_win_by_TKO_Doctor_Stoppage',
-                                  f'{fighter}_wins', f'{fighter}_age'])
-        for col in columns:
-            self.__data[col] = self.__data[col].astype('category').cat.codes.apply(lambda x: str(bin(x))[2:])
+        self.__data['no_of_rounds'] = self.__data['no_of_rounds'].astype('category').cat.codes.apply(lambda x: self.decimal_to_binary(x))
+        columns = []
+        columns = columns + (['_current_lose_streak', '_current_win_streak',
+                              '_draw', '_longest_win_streak', '_losses',
+                              '_total_rounds_fought', '_total_title_bouts',
+                              '_win_by_Decision_Majority', '_win_by_Decision_Split',
+                              '_win_by_Decision_Unanimous', '_win_by_KO/TKO',
+                              '_win_by_Submission', '_win_by_TKO_Doctor_Stoppage',
+                              '_wins', '_age'])
+        for col_name in columns:
+            self.__data[[f'R{col_name}', f'B{col_name}']] = self.__data[[f'R{col_name}', f'B{col_name}']].stack().rank(
+                method='dense').unstack().astype(int)
+
+            self.__data[f'R{col_name}'] = self.__data[f'R{col_name}'].apply(lambda x: self.decimal_to_binary(x))
+            self.__data[f'B{col_name}'] = self.__data[f'B{col_name}'].apply(lambda x: self.decimal_to_binary(x))
+
+
+    @staticmethod
+    def decimal_to_binary(decimal_number):
+        return str(bin(decimal_number))[2:]
